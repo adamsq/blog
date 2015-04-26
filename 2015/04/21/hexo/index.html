@@ -11,27 +11,21 @@
     
 
     
-    <meta name="description" content="建立hexo站点安装node.js在使用hexo前必须先架设node.js环境。在 http://nodejs.org/ 上可以下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。
-$ ./configure
-$ make install
-安装hexo使用npm命令直接安装hexo及它的命令行工具
-1$ npm install hexo-">
+    <meta name="description" content="一、建立hexo站点1.1安装node.js由于hexo基于node.js环境，所以在建立hexo站点前必须先安装node.js环境。
+我的系统是从unbuntu官网下载的unbuntu14.04 32bit。如果是windows用户，可以安装node.js的windows版本，官网上也提供win版本的下载链接。
+在 http://nodejs.org/ 上下载node.js的最新源码，然后使用m">
 <meta property="og:type" content="article">
 <meta property="og:title" content="hexo">
 <meta property="og:url" content="http://adamsq.github.io/blog/2015/04/21/hexo/index.html">
 <meta property="og:site_name" content="adam's blog">
-<meta property="og:description" content="建立hexo站点安装node.js在使用hexo前必须先架设node.js环境。在 http://nodejs.org/ 上可以下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。
-$ ./configure
-$ make install
-安装hexo使用npm命令直接安装hexo及它的命令行工具
-1$ npm install hexo-">
+<meta property="og:description" content="一、建立hexo站点1.1安装node.js由于hexo基于node.js环境，所以在建立hexo站点前必须先安装node.js环境。
+我的系统是从unbuntu官网下载的unbuntu14.04 32bit。如果是windows用户，可以安装node.js的windows版本，官网上也提供win版本的下载链接。
+在 http://nodejs.org/ 上下载node.js的最新源码，然后使用m">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="hexo">
-<meta name="twitter:description" content="建立hexo站点安装node.js在使用hexo前必须先架设node.js环境。在 http://nodejs.org/ 上可以下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。
-$ ./configure
-$ make install
-安装hexo使用npm命令直接安装hexo及它的命令行工具
-1$ npm install hexo-">
+<meta name="twitter:description" content="一、建立hexo站点1.1安装node.js由于hexo基于node.js环境，所以在建立hexo站点前必须先安装node.js环境。
+我的系统是从unbuntu官网下载的unbuntu14.04 32bit。如果是windows用户，可以安装node.js的windows版本，官网上也提供win版本的下载链接。
+在 http://nodejs.org/ 上下载node.js的最新源码，然后使用m">
 
     
     <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
@@ -40,8 +34,8 @@ $ make install
     <link rel="icon" href="/blog/img/favicon.ico">
     
     
-    <link rel="apple-touch-icon" href="/blog/img/jacman.jpg">
-    <link rel="apple-touch-icon-precomposed" href="/blog/img/jacman.jpg">
+    <link rel="apple-touch-icon" href="/blog/img/20.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/20.jpg">
     
     <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
 </head>
@@ -52,7 +46,7 @@ $ make install
 <div>
 		
 			<div id="imglogo">
-				<a href="/blog/"><img src="/blog/img/logo.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
+				<a href="/blog/"><img src="/blog/img/20.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
 			</div>
 			
 			<div id="textlogo">
@@ -107,24 +101,26 @@ $ make install
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#建立hexo站点"><span class="toc-number">1.</span> <span class="toc-text">建立hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-number">1.1.</span> <span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装hexo"><span class="toc-number">1.2.</span> <span class="toc-text">安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建立站点"><span class="toc-number">1.3.</span> <span class="toc-text">建立站点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改hexo站点"><span class="toc-number">2.</span> <span class="toc-text">修改hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#修改主题"><span class="toc-number">2.1.</span> <span class="toc-text">修改主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建文章"><span class="toc-number">2.2.</span> <span class="toc-text">新建文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#与github同步"><span class="toc-number">2.3.</span> <span class="toc-text">与github同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、建立hexo站点"><span class="toc-number">1.</span> <span class="toc-text">一、建立hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1安装node-js"><span class="toc-number">1.1.</span> <span class="toc-text">1.1安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2安装hexo"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3建立站点"><span class="toc-number">1.3.</span> <span class="toc-text">1.3建立站点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、修改hexo站点"><span class="toc-number">2.</span> <span class="toc-text">二、修改hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1修改主题"><span class="toc-number">2.1.</span> <span class="toc-text">2.1修改主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2新建文章"><span class="toc-number">2.2.</span> <span class="toc-text">2.2新建文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3与github同步"><span class="toc-number">2.3.</span> <span class="toc-text">2.3与github同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
 		
 		</div>
 		
-		<h2 id="建立hexo站点">建立hexo站点</h2><h3 id="安装node-js">安装node.js</h3><p>在使用hexo前必须先架设node.js环境。在 <a href="http://nodejs.org" target="_blank" rel="external">http://nodejs.org/</a> 上可以下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。</p>
-<pre><code><span class="variable">$ </span>./configure
-<span class="variable">$ </span>make install
-</code></pre><h3 id="安装hexo">安装hexo</h3><p>使用npm命令直接安装hexo及它的命令行工具</p>
+		<h2 id="一、建立hexo站点">一、建立hexo站点</h2><h3 id="1-1安装node-js">1.1安装node.js</h3><p>由于hexo基于node.js环境，所以在建立hexo站点前必须先安装node.js环境。</p>
+<p>我的系统是从unbuntu官网下载的unbuntu14.04 32bit。如果是windows用户，可以安装node.js的windows版本，官网上也提供win版本的下载链接。</p>
+<p>在 <a href="http://nodejs.org" target="_blank" rel="external">http://nodejs.org/</a> 上下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。编译了半小时才完成，居然没有报任何错误，so lucky!</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure</span><br><span class="line">$ make install</span><br></pre></td></tr></table></figure>
+<h3 id="1-2安装hexo">1.2安装hexo</h3><p>装完了node.js就可以安装hexo了，使用npm命令直接安装hexo及它的命令行工具。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<h3 id="建立站点">建立站点</h3><p>使用 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上的例子可以快速创建一个hexo站点</p>
-<pre><code><span class="variable">$ </span>hexo init blog
-<span class="variable">$ </span>cd blog
-<span class="variable">$ </span>npm install
-<span class="variable">$ </span>hexo server
-</code></pre><p>之后使用 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以在本地访问站点</p>
-<h2 id="修改hexo站点">修改hexo站点</h2><h3 id="修改主题">修改主题</h3><p>本站用的是 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上theme页的jacman主题，先从git上下载下来，然后修改hexo目录下_的文件即可设置新主题。</p>
-<h3 id="新建文章">新建文章</h3><p>用hexo new命令可以创建一篇新的文章，然后用编辑器编辑即可，支持Markdown语法</p>
-<h3 id="与github同步">与github同步</h3><h2 id="总结">总结</h2><ul>
+<h3 id="1-3建立站点">1.3建立站点</h3><p>使用 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上的例子可以快速创建一个hexo站点</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
+<p>完成了这个步骤之后，可以看到站点的相关文件都已经在blog目录下建立完毕。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>之后使用hexo server可以在本地浏览该站点，默认的地址是 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
+<h2 id="二、修改hexo站点">二、修改hexo站点</h2><h3 id="2-1修改主题">2.1修改主题</h3><p>本站用的是 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上theme页的jacman主题，先从git上下载下来，然后修改hexo目录下_config.yml的文件即可设置新主题。如果想要定制化hexo，除了看_config.yml里的注释，还可以把官网上的doc看一篇。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$vim</span> _config.yml</span><br><span class="line">  theme: jacman</span><br></pre></td></tr></table></figure>
+<h3 id="2-2新建文章">2.2新建文章</h3><p>用hexo new命令可以创建一篇新的文章，然后用编辑器编辑即可，支持Markdown语法。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new hexo</span><br><span class="line">vim <span class="built_in">source</span>/_posts/hexo.md</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-3与github同步">2.3与github同步</h3><p>hexo可以实现一键同步，它提供很多种提交方式，git是最常用的一种。要用git进行提交，先要设置好git用ssh访问，安装hexo的git工具，然后修改_config.yml的设置。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line">vim _config.yml</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure></p>
+<h2 id="总结">总结</h2><ul>
 <li>hexo依赖于node.js，在安装前必须先架设node.js环境。</li>
 <li>hexo内置与github服务器同步的命令，前提是安装好git，并在配置文件下设置git的相关配置。</li>
 <li>使用hexo server命令可以在本地查看站点，再用hexo d命令与github进行一键同步。</li>
@@ -135,6 +131,11 @@ $ make install
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/java-web/">java&web</a><a href="/blog/tags/linux/">linux</a>
+  </div>
 
 </div>
 
@@ -153,19 +154,6 @@ $ make install
    	       
 	</article>
 	
-<nav class="article-nav clearfix">
- 
-
-<div class="next">
-<a href="/blog/2015/04/20/hello-world/"  title="Hello World">
- <strong>下一篇：</strong><br/> 
- <span>Hello World
-</span>
-</a>
-</div>
-
-</nav>
-
 	
 
 </div>  
@@ -174,7 +162,7 @@ $ make install
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#建立hexo站点"><span class="toc-number">1.</span> <span class="toc-text">建立hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#安装node-js"><span class="toc-number">1.1.</span> <span class="toc-text">安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#安装hexo"><span class="toc-number">1.2.</span> <span class="toc-text">安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#建立站点"><span class="toc-number">1.3.</span> <span class="toc-text">建立站点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#修改hexo站点"><span class="toc-number">2.</span> <span class="toc-text">修改hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#修改主题"><span class="toc-number">2.1.</span> <span class="toc-text">修改主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#新建文章"><span class="toc-number">2.2.</span> <span class="toc-text">新建文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#与github同步"><span class="toc-number">2.3.</span> <span class="toc-text">与github同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、建立hexo站点"><span class="toc-number">1.</span> <span class="toc-text">一、建立hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1安装node-js"><span class="toc-number">1.1.</span> <span class="toc-text">1.1安装node.js</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2安装hexo"><span class="toc-number">1.2.</span> <span class="toc-text">1.2安装hexo</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3建立站点"><span class="toc-number">1.3.</span> <span class="toc-text">1.3建立站点</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、修改hexo站点"><span class="toc-number">2.</span> <span class="toc-text">二、修改hexo站点</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1修改主题"><span class="toc-number">2.1.</span> <span class="toc-text">2.1修改主题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2新建文章"><span class="toc-number">2.2.</span> <span class="toc-text">2.2新建文章</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3与github同步"><span class="toc-number">2.3.</span> <span class="toc-text">2.3与github同步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
  
   </div>
 
@@ -185,6 +173,21 @@ $ make install
   
 
   
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/java-web/" title="java&amp;web">java&amp;web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
 
   <div class="linkslist">
   <p class="asidetitle">友情鏈接</p>
