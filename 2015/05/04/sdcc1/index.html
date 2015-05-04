@@ -4,22 +4,28 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>adam&#39;s blog</title>
+    <title>sdcc man阅读笔记（一）——sdcc 的介绍与安装 | adam&#39;s blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="adam">
     
 
     
-    <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="adam's blog">
-<meta property="og:url" content="http://adamsq.github.io/blog/index.html">
+    <meta name="description" content="一、前言最近打算写一些单片机程序，因此买了一块51开发板，打算写几个有趣的程序。
+出于将学习和娱乐分开的目的，我把编程工作放在linux下来进行。
+在linux下进行单片机的软件开发，要先安装专用的交叉编译器sdcc。接下来我会阅读sdcc的man文档，再结合一些简单的实验，来了解一下这款编译器。其目的有三，一是复习一些单片机的知识，为编程做点准备。二是理清sdcc的编译选项，好用来写makefi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdcc man阅读笔记（一）——sdcc 的介绍与安装">
+<meta property="og:url" content="http://adamsq.github.io/blog/2015/05/04/sdcc1/index.html">
 <meta property="og:site_name" content="adam's blog">
-<meta property="og:description">
+<meta property="og:description" content="一、前言最近打算写一些单片机程序，因此买了一块51开发板，打算写几个有趣的程序。
+出于将学习和娱乐分开的目的，我把编程工作放在linux下来进行。
+在linux下进行单片机的软件开发，要先安装专用的交叉编译器sdcc。接下来我会阅读sdcc的man文档，再结合一些简单的实验，来了解一下这款编译器。其目的有三，一是复习一些单片机的知识，为编程做点准备。二是理清sdcc的编译选项，好用来写makefi">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="adam's blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="sdcc man阅读笔记（一）——sdcc 的介绍与安装">
+<meta name="twitter:description" content="一、前言最近打算写一些单片机程序，因此买了一块51开发板，打算写几个有趣的程序。
+出于将学习和娱乐分开的目的，我把编程工作放在linux下来进行。
+在linux下进行单片机的软件开发，要先安装专用的交叉编译器sdcc。接下来我会阅读sdcc的man文档，再结合一些简单的实验，来了解一下这款编译器。其目的有三，一是复习一些单片机的知识，为编程做点准备。二是理清sdcc的编译选项，好用来写makefi">
 
     
     <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
@@ -73,12 +79,10 @@
 </div>
     </header>
     <div id="container">
-      <div id="main">
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
   <h1 itemprop="name">
     
       <a href="/blog/2015/05/04/sdcc1/" title="sdcc man阅读笔记（一）——sdcc 的介绍与安装" itemprop="url">sdcc man阅读笔记（一）——sdcc 的介绍与安装</a>
@@ -92,9 +96,16 @@
     
   </p>
 </header>
-    <div class="article-content">
-        
-        <h2 id="一、前言">一、前言</h2><p>最近打算写一些单片机程序，因此买了一块51开发板，打算写几个有趣的程序。</p>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、sdcc的安装"><span class="toc-number">2.</span> <span class="toc-text">二、sdcc的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_在ubuntun下安装sdcc"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 在ubuntun下安装sdcc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_用其他方式安装sdcc"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 用其他方式安装sdcc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、sdcc包含的内容"><span class="toc-number">3.</span> <span class="toc-text">三、sdcc包含的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_头文件和库文件"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 头文件和库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_编译程序sdcc"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 编译程序sdcc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_预处理程序sdccp"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 预处理程序sdccp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_汇编程序和链接程序sdas,_sdld"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 汇编程序和链接程序sdas, sdld</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_仿真器"><span class="toc-number">3.5.</span> <span class="toc-text">2.5 仿真器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6_debug工具_sdcdb"><span class="toc-number">3.6.</span> <span class="toc-text">2.6 debug工具 sdcdb</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="一、前言">一、前言</h2><p>最近打算写一些单片机程序，因此买了一块51开发板，打算写几个有趣的程序。</p>
 <p>出于将学习和娱乐分开的目的，我把编程工作放在linux下来进行。</p>
 <p>在linux下进行单片机的软件开发，要先安装专用的交叉编译器sdcc。接下来我会阅读sdcc的man文档，再结合一些简单的实验，来了解一下这款编译器。其目的有三，一是复习一些单片机的知识，为编程做点准备。二是理清sdcc的编译选项，好用来写makefile。三是弄明白sdcc和keil编译器的不同，这样可以把keil c的代码移植过来直接使用。</p>
 <h2 id="二、sdcc的安装">二、sdcc的安装</h2><h3 id="1-1_在ubuntun下安装sdcc">1.1 在ubuntun下安装sdcc</h3><p>由于我的系统是ubuntun，因此可以直接使用apt-get命令来进行安装<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> apt-get install sdcc</span><br></pre></td></tr></table></figure></p>
@@ -120,14 +131,9 @@
 <li>sdcc包含有一个编译程序、预处理程序、汇编程序和链接程序。</li>
 <li>sdcc还包含有一个集成的仿真器和debug工具。</li>
 </ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
+  
+	</div>
+		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
 
@@ -140,99 +146,43 @@
 
 
 
-
-<div class="comments-count">
+	<div class="article-share" id="share">
 	
-</div>
+	  <div data-url="http://adamsq.github.io/blog/2015/05/04/sdcc1/" data-title="sdcc man阅读笔记（一）——sdcc 的介绍与安装 | adam&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
 
 </footer>
 
-
-    </article>
-
-
-
-
-
-
-   
-    
-    <article class="post-expand post" itemprop="articleBody"> 
-        <header class="article-info clearfix">
-  <h1 itemprop="name">
-    
-      <a href="/blog/2015/04/21/hexo/" title="hexo" itemprop="url">hexo</a>
-  </h1>
-  <p class="article-author">By
-       
-		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
-		
-  <p class="article-time">
-    <time datetime="2015-04-21T13:36:31.000Z" itemprop="datePublished"> 發表於 2015-04-21</time>
-    
-  </p>
-</header>
-    <div class="article-content">
-        
-        <h2 id="一、建立hexo站点">一、建立hexo站点</h2><h3 id="1-1安装node-js">1.1安装node.js</h3><p>由于hexo基于node.js环境，所以在建立hexo站点前必须先安装node.js环境。</p>
-<p>我的系统是从unbuntu官网下载的unbuntu14.04 32bit。如果是windows用户，可以安装node.js的windows版本，官网上也提供win版本的下载链接。</p>
-<p>在 <a href="http://nodejs.org" target="_blank" rel="external">http://nodejs.org/</a> 上下载node.js的最新源码，然后使用make install 进行编译，即可在系统里生成node.js的环境。编译了半小时才完成，居然没有报任何错误，so lucky!</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure</span><br><span class="line">$ make install</span><br></pre></td></tr></table></figure>
-<h3 id="1-2安装hexo">1.2安装hexo</h3><p>装完了node.js就可以安装hexo了，使用npm命令直接安装hexo及它的命令行工具。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-cli -g</span><br></pre></td></tr></table></figure>
-<h3 id="1-3建立站点">1.3建立站点</h3><p>使用 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上的例子可以快速创建一个hexo站点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init blog</span><br><span class="line">$ <span class="built_in">cd</span> blog</span><br><span class="line">$ npm install</span><br></pre></td></tr></table></figure>
-<p>完成了这个步骤之后，可以看到站点的相关文件都已经在blog目录下建立完毕。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>之后使用hexo server可以在本地浏览该站点，默认的地址是 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a></p>
-<h2 id="二、修改hexo站点">二、修改hexo站点</h2><h3 id="2-1修改主题">2.1修改主题</h3><p>本站用的是 <a href="http://hexo.io" target="_blank" rel="external">http://hexo.io</a> 上theme页的jacman主题，先从git上下载下来，然后修改hexo目录下_config.yml的文件即可设置新主题。如果想要定制化hexo，除了看_config.yml里的注释，还可以把官网上的doc看一篇。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$vim</span> _config.yml</span><br><span class="line">  theme: jacman</span><br></pre></td></tr></table></figure>
-<h3 id="2-2新建文章">2.2新建文章</h3><p>用hexo new命令可以创建一篇新的文章，然后用编辑器编辑即可，支持Markdown语法。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">hexo new hexo</span><br><span class="line">vim <span class="built_in">source</span>/_posts/hexo.md</span><br></pre></td></tr></table></figure></p>
-<h3 id="2-3与github同步">2.3与github同步</h3><p>hexo可以实现一键同步，它提供很多种提交方式，git是最常用的一种。要用git进行提交，先要设置好git用ssh访问，安装hexo的git工具，然后修改_config.yml的设置。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br><span class="line"></span><br><span class="line">vim _config.yml</span><br><span class="line"></span><br><span class="line">deploy:</span><br><span class="line">  <span class="built_in">type</span>: git</span><br><span class="line">  repo: &lt;repository url&gt;</span><br><span class="line">  branch: [branch]</span><br><span class="line">  message: [message]</span><br></pre></td></tr></table></figure></p>
-<h2 id="总结">总结</h2><ul>
-<li>hexo依赖于node.js，在安装前必须先架设node.js环境。</li>
-<li>hexo内置与github服务器同步的命令，前提是安装好git，并在配置文件下设置git的相关配置。</li>
-<li>使用hexo server命令可以在本地查看站点，再用hexo d命令与github进行一键同步。</li>
-<li>用hexo new命令创建文章，并用Markdown语法直接编辑文件。</li>
-</ul>
-
-        
-        
-        <p class="article-more-link">
-          
-       </p>
-    </div>
-    <footer class="article-footer clearfix">
-<div class="article-catetags">
-
-
-  <div class="article-tags">
-  
-  <span></span> <a href="/blog/tags/java-web/">java&web</a><a href="/blog/tags/linux/">linux</a>
-  </div>
-
-</div>
-
-
-
-
-<div class="comments-count">
+   	       
+	</article>
 	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/blog/2015/04/21/hexo/"  title="hexo">
+ <strong>下一篇：</strong><br/> 
+ <span>hexo
+</span>
+</a>
 </div>
 
-</footer>
+</nav>
 
+	
 
-    </article>
-
-
-
-
-
-
-
-</div>
+</div>  
       <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、前言"><span class="toc-number">1.</span> <span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、sdcc的安装"><span class="toc-number">2.</span> <span class="toc-text">二、sdcc的安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_在ubuntun下安装sdcc"><span class="toc-number">2.1.</span> <span class="toc-text">1.1 在ubuntun下安装sdcc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_用其他方式安装sdcc"><span class="toc-number">2.2.</span> <span class="toc-text">1.2 用其他方式安装sdcc</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、sdcc包含的内容"><span class="toc-number">3.</span> <span class="toc-text">三、sdcc包含的内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_头文件和库文件"><span class="toc-number">3.1.</span> <span class="toc-text">2.1 头文件和库文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_编译程序sdcc"><span class="toc-number">3.2.</span> <span class="toc-text">2.2 编译程序sdcc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_预处理程序sdccp"><span class="toc-number">3.3.</span> <span class="toc-text">2.3 预处理程序sdccp</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_汇编程序和链接程序sdas,_sdld"><span class="toc-number">3.4.</span> <span class="toc-text">2.4 汇编程序和链接程序sdas, sdld</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_仿真器"><span class="toc-number">3.5.</span> <span class="toc-text">2.5 仿真器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6_debug工具_sdcdb"><span class="toc-number">3.6.</span> <span class="toc-text">2.6 debug工具 sdcdb</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
 
 <div id="asidepart">
 <div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
@@ -362,12 +312,69 @@ $(document).ready(function(){
       m.removeClass('moveMain');
       a.css('display', 'block').removeClass('fadeOut');
       o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
         
     }
   });
 });
 </script>
 
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
 
 
 
@@ -428,4 +435,4 @@ $(document).ready(function(){
 <!-- Tiny_search End -->
 
   </body>
- </html>
+</html>
