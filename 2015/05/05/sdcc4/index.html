@@ -1,0 +1,449 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sdcc man阅读笔记（四）——存储类型关键字 | adam&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="adam">
+    
+
+    
+    <meta name="description" content="一、存储类型关键字1.1 sdcc中特殊关键字的使用sdcc提供和keil一样的特殊关键字来指定变量的存储类型，和keil不同的是，sdcc在使用c51专用的特殊关键字时，要用两个下划线作为前缀，比如申明一个idata存储类型的变量时语句如下。
+1__idata unsigned char i;
+1.2 __data类型该类型是small存储模式下默认使用的存储类型，对应直接寻址方式。
+1.3">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdcc man阅读笔记（四）——存储类型关键字">
+<meta property="og:url" content="http://adamsq.github.io/blog/2015/05/05/sdcc4/index.html">
+<meta property="og:site_name" content="adam's blog">
+<meta property="og:description" content="一、存储类型关键字1.1 sdcc中特殊关键字的使用sdcc提供和keil一样的特殊关键字来指定变量的存储类型，和keil不同的是，sdcc在使用c51专用的特殊关键字时，要用两个下划线作为前缀，比如申明一个idata存储类型的变量时语句如下。
+1__idata unsigned char i;
+1.2 __data类型该类型是small存储模式下默认使用的存储类型，对应直接寻址方式。
+1.3">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdcc man阅读笔记（四）——存储类型关键字">
+<meta name="twitter:description" content="一、存储类型关键字1.1 sdcc中特殊关键字的使用sdcc提供和keil一样的特殊关键字来指定变量的存储类型，和keil不同的是，sdcc在使用c51专用的特殊关键字时，要用两个下划线作为前缀，比如申明一个idata存储类型的变量时语句如下。
+1__idata unsigned char i;
+1.2 __data类型该类型是small存储模式下默认使用的存储类型，对应直接寻址方式。
+1.3">
+
+    
+    <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/blog/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/blog/img/20.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/20.jpg">
+    
+    <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/blog/"><img src="/blog/img/20.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/blog/" title="adam&#39;s blog">adam&#39;s blog</a></h1>
+				<h2 class="blog-motto">Angels can fly because they take themselves lightly.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/blog/">Home</a></li>
+					
+						<li><a href="/blog/archives">Archives</a></li>
+					
+						<li><a href="/blog/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:adamsq.github.io/blog">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/05/05/sdcc4/" title="sdcc man阅读笔记（四）——存储类型关键字" itemprop="url">sdcc man阅读笔记（四）——存储类型关键字</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-05T10:44:21.000Z" itemprop="datePublished"> 發表於 2015-05-05</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、存储类型关键字"><span class="toc-number">1.</span> <span class="toc-text">一、存储类型关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_sdcc中特殊关键字的使用"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 sdcc中特殊关键字的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2___data类型"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 __data类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3___pdata类型"><span class="toc-number">1.3.</span> <span class="toc-text">1.3  __pdata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4___xdata类型"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 __xdata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5___idata类型"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 __idata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6___code类型"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 __code类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7___bit类型"><span class="toc-number">1.7.</span> <span class="toc-text">1.7  __bit类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8___sfr类型"><span class="toc-number">1.8.</span> <span class="toc-text">1.8 __sfr类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-9_不同存储空间的指针"><span class="toc-number">1.9.</span> <span class="toc-text">1.9 不同存储空间的指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-10_at关键字"><span class="toc-number">1.10.</span> <span class="toc-text">1.10 at关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-11_小结"><span class="toc-number">1.11.</span> <span class="toc-text">1.11 小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、实验"><span class="toc-number">2.</span> <span class="toc-text">二、实验</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="一、存储类型关键字">一、存储类型关键字</h2><h3 id="1-1_sdcc中特殊关键字的使用">1.1 sdcc中特殊关键字的使用</h3><p>sdcc提供和keil一样的特殊关键字来指定变量的存储类型，和keil不同的是，sdcc在使用c51专用的特殊关键字时，要用两个下划线作为前缀，比如申明一个idata存储类型的变量时语句如下。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__idata <span class="keyword">unsigned</span> <span class="keyword">char</span> i;</span><br></pre></td></tr></table></figure>
+<h3 id="1-2___data类型">1.2 __data类型</h3><p>该类型是small存储模式下默认使用的存储类型，对应直接寻址方式。</p>
+<h3 id="1-3___pdata类型">1.3  __pdata类型</h3><p>该类型是medium存储模式下默认使用的存储类型，对应8bit的寄存器间接寻址。</p>
+<h3 id="1-4___xdata类型">1.4 __xdata类型</h3><p>该类型是large存储模式下默认使用的储存类型，对应16bit的寄存器间接寻址。</p>
+<h3 id="1-5___idata类型">1.5 __idata类型</h3><p>用间接寻址的方式，用这种方式可以访问片内ram的高128bit，当然也可以同时访问低128bit，只是效率会降低。之所以有这个关键字存在，应该是由于许多51单片机将最初的128bit的内部ram扩展到了256bit。它和pdata在间接寻址上的区别是无需用寄存暂存要赋值的数值。</p>
+<h3 id="1-6___code类型">1.6 __code类型</h3><p>将数据存在rom中，只能存储常量。</p>
+<h3 id="1-7___bit类型">1.7  __bit类型</h3><p>用来定义bit变量，51的位寻址区在内置ram的0x20-0x2f区域，共128个bit位。</p>
+<h3 id="1-8___sfr类型">1.8 __sfr类型</h3><p>用来定义特殊功能寄存器</p>
+<p>定义P0口<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__sfr __at (<span class="number">0x80</span>) P0;</span><br></pre></td></tr></table></figure></p>
+<p>一般情况下sdcc提供的头文件里已经将51的特殊功能寄存器全都定义好了，所以这个关键字很少使用。</p>
+<h3 id="1-9_不同存储空间的指针">1.9 不同存储空间的指针</h3><p>sdcc允许指针指向不同类型的存储空间，这样的指针有三个字节，第一个字节表示指向的区域。下面拷贝一段man上的例子：<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* pointer physically in internal ram pointing to object in external</span><br><span class="line">ram */</span></span><br><span class="line">__xdata <span class="keyword">unsigned</span> <span class="keyword">char</span> * __data p;</span><br><span class="line"><span class="comment">/* pointer physically in external ram pointing to object in internal</span><br><span class="line">ram */</span></span><br><span class="line">__data <span class="keyword">unsigned</span> <span class="keyword">char</span> * __xdata p;</span><br><span class="line"><span class="comment">/* pointer physically in code rom pointing to data in xdata space</span><br><span class="line">*/</span></span><br><span class="line">__xdata <span class="keyword">unsigned</span> <span class="keyword">char</span> * __code p;</span><br><span class="line"><span class="comment">/* pointer physically in code space pointing to data in code space</span><br><span class="line">*/</span></span><br><span class="line">__code <span class="keyword">unsigned</span> <span class="keyword">char</span> * __code p;</span><br><span class="line"><span class="comment">/* generic pointer physically located in xdata space */</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> * __xdata p;</span><br><span class="line"><span class="comment">/* generic pointer physically located in default memory space */</span></span><br><span class="line"><span class="keyword">unsigned</span> <span class="keyword">char</span> * p;</span><br><span class="line"><span class="comment">/* the following is a function pointer physically located in data</span><br><span class="line">space */</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> (* __data fp)(<span class="keyword">void</span>);</span><br></pre></td></tr></table></figure></p>
+<h3 id="1-10_at关键字">1.10 at关键字</h3><p>at关键字可以指定变量的存储地址，这可以减少指针的使用，以及直接地址访问这样的语句。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">__xdata __at (<span class="number">0x7ffe</span>) <span class="keyword">unsigned</span> <span class="keyword">int</span> chksum;</span><br><span class="line">__code __at (<span class="number">0x7ff0</span>) <span class="keyword">char</span> Id[<span class="number">5</span>] = ”SDCC”;</span><br><span class="line"><span class="keyword">volatile</span> __xdata __at (<span class="number">0x8000</span>) <span class="keyword">unsigned</span> <span class="keyword">char</span> PORTA_8255;</span><br><span class="line">__bit __at (<span class="number">0x02</span>) bvar;</span><br></pre></td></tr></table></figure>
+<p>使用时需要注意指定的地址是否在overlay区。</p>
+<h3 id="1-11_小结">1.11 小结</h3><ul>
+<li>small模式下默认使用data存储变量，medium模式下用xdata，large模式下用pdata</li>
+<li>data和idata用于变量存在片内ram，xdata和pdata用于指定变量存在外部ram</li>
+<li>data用于片内ram的低128bit， idata用于片内的高128bit</li>
+<li>xdata用于片外ram的低256bit，pdata用于片外ram的64K</li>
+<li>bit用于位寻址，sfr用于特殊功能寄存器，code用于rom</li>
+</ul>
+<h2 id="二、实验">二、实验</h2><p>针对sdcc的储存类型关键字，下面做一个实验来做进一步的学习。</p>
+<p>首先写这样一个程序，然后编译。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">$vim test.c</span><br><span class="line"></span><br><span class="line">__data <span class="keyword">unsigned</span> <span class="keyword">char</span> data_v;</span><br><span class="line">__idata <span class="keyword">unsigned</span> <span class="keyword">char</span> idata_v;</span><br><span class="line">__pdata <span class="keyword">unsigned</span> <span class="keyword">char</span> pdata_v;</span><br><span class="line">__xdata <span class="keyword">unsigned</span> <span class="keyword">char</span> xdata_v;</span><br><span class="line"></span><br><span class="line">__code <span class="keyword">unsigned</span> <span class="keyword">char</span> code_v  = <span class="number">0xff</span>;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span><br><span class="line"></span>&#123;</span><br><span class="line">        <span class="keyword">unsigned</span> <span class="keyword">char</span> i;</span><br><span class="line"></span><br><span class="line">        data_v =  <span class="number">1</span>;</span><br><span class="line">        idata_v = <span class="number">1</span>;</span><br><span class="line">        pdata_v = <span class="number">1</span>;</span><br><span class="line">        xdata_v = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        i = code_v;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>先看看他们被分配的区域</p>
+<p>data_v被分配在内部ram的前8个字节后:<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;--------------------------------------------------------&#10;; overlayable register banks&#10;;--------------------------------------------------------&#10;        .area REG_BANK_0        (REL,OVR,DATA)&#10;        .ds 8&#10;;--------------------------------------------------------&#10;; internal ram data&#10;;--------------------------------------------------------&#10;        .area DSEG    (DATA)&#10;_data_v::&#10;        .ds 1</span><br></pre></td></tr></table></figure></p>
+<p>idata_v被分配data之后，它之后区域就是栈区了:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;--------------------------------------------------------&#10;; indirectly addressable internal ram data&#10;;--------------------------------------------------------&#10;        .area ISEG    (DATA)&#10;_idata_v::&#10;        .ds 1</span><br></pre></td></tr></table></figure>
+<p>pdata和xdata都被分配在外存:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;--------------------------------------------------------&#10;; paged external ram data&#10;;--------------------------------------------------------&#10;        .area PSEG    (PAG,XDATA)&#10;_pdata_v::&#10;        .ds 1&#10;;--------------------------------------------------------&#10;; external ram data&#10;;--------------------------------------------------------&#10;        .area XSEG    (XDATA)&#10;_xdata_v::&#10;        .ds 1</span><br></pre></td></tr></table></figure>
+<p>接着看对他们的处理方式</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">;       test.c:14: data_v =  1;&#10;        mov     _data_v,#0x01&#10;;       test.c:15: idata_v = 1;&#10;        mov     r0,#_idata_v&#10;        mov     @r0,#0x01&#10;;       test.c:16: pdata_v = 1;&#10;        mov     r0,#_pdata_v&#10;        mov     a,#0x01&#10;        movx    @r0,a&#10;;       test.c:17: xdata_v = 1;&#10;        mov     dptr,#_xdata_v&#10;        mov     a,#0x01&#10;        movx    @dptr,a</span><br></pre></td></tr></table></figure>
+<p>很明显，data使用了立即寻址，而pdata和xdata都使用了movx指令来访问外存。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://adamsq.github.io/blog/2015/05/05/sdcc4/" data-title="sdcc man阅读笔记（四）——存储类型关键字 | adam&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/blog/2015/05/05/sdcc3/"  title="sdcc man阅读笔记（三）——c51专用编译选项">
+ <strong>下一篇：</strong><br/> 
+ <span>sdcc man阅读笔记（三）——c51专用编译选项
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、存储类型关键字"><span class="toc-number">1.</span> <span class="toc-text">一、存储类型关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_sdcc中特殊关键字的使用"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 sdcc中特殊关键字的使用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2___data类型"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 __data类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3___pdata类型"><span class="toc-number">1.3.</span> <span class="toc-text">1.3  __pdata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4___xdata类型"><span class="toc-number">1.4.</span> <span class="toc-text">1.4 __xdata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5___idata类型"><span class="toc-number">1.5.</span> <span class="toc-text">1.5 __idata类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6___code类型"><span class="toc-number">1.6.</span> <span class="toc-text">1.6 __code类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7___bit类型"><span class="toc-number">1.7.</span> <span class="toc-text">1.7  __bit类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8___sfr类型"><span class="toc-number">1.8.</span> <span class="toc-text">1.8 __sfr类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-9_不同存储空间的指针"><span class="toc-number">1.9.</span> <span class="toc-text">1.9 不同存储空间的指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-10_at关键字"><span class="toc-number">1.10.</span> <span class="toc-text">1.10 at关键字</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-11_小结"><span class="toc-number">1.11.</span> <span class="toc-text">1.11 小结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、实验"><span class="toc-number">2.</span> <span class="toc-text">二、实验</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/java-web/" title="java&amp;web">java&amp;web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Adam ,a fat guy who will never stop eating. <br/>
+			Nice to meet you.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/adamsq" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:adam_embedded@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/blog/about" target="_blank" title="adam">adam</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/blog/js/jquery-2.0.3.min.js"></script>
+<script src="/blog/js/jquery.imagesloaded.min.js"></script>
+<script src="/blog/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/blog/img/scrollup.png"/></a>
+	</div>
+	<script src="/blog/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

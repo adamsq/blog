@@ -1,0 +1,452 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sdcc man阅读笔记（二）——基础编译选项&amp;output files | adam&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="adam">
+    
+
+    
+    <meta name="description" content="一、基础编译选项1.1 单源文件的编译假设目前有一个源文件led.c，可以用如下命令进行编译。
+1$sdcc led.c
+编译完之后发现目录下好多生成的编译文件。其中led.rel是类似gcc中的led.o这样用于链接的对象文件，有所不同的是，led.rel中并不包含链接用的汇编代码，它包含在led.lst中。而led.ihx是用来烧写的hex文件，它的格式是intel hex规范。实际用于烧写的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdcc man阅读笔记（二）——基础编译选项&output files">
+<meta property="og:url" content="http://adamsq.github.io/blog/2015/05/04/sdcc2/index.html">
+<meta property="og:site_name" content="adam's blog">
+<meta property="og:description" content="一、基础编译选项1.1 单源文件的编译假设目前有一个源文件led.c，可以用如下命令进行编译。
+1$sdcc led.c
+编译完之后发现目录下好多生成的编译文件。其中led.rel是类似gcc中的led.o这样用于链接的对象文件，有所不同的是，led.rel中并不包含链接用的汇编代码，它包含在led.lst中。而led.ihx是用来烧写的hex文件，它的格式是intel hex规范。实际用于烧写的">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdcc man阅读笔记（二）——基础编译选项&output files">
+<meta name="twitter:description" content="一、基础编译选项1.1 单源文件的编译假设目前有一个源文件led.c，可以用如下命令进行编译。
+1$sdcc led.c
+编译完之后发现目录下好多生成的编译文件。其中led.rel是类似gcc中的led.o这样用于链接的对象文件，有所不同的是，led.rel中并不包含链接用的汇编代码，它包含在led.lst中。而led.ihx是用来烧写的hex文件，它的格式是intel hex规范。实际用于烧写的">
+
+    
+    <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/blog/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/blog/img/20.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/20.jpg">
+    
+    <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/blog/"><img src="/blog/img/20.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/blog/" title="adam&#39;s blog">adam&#39;s blog</a></h1>
+				<h2 class="blog-motto">Angels can fly because they take themselves lightly.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/blog/">Home</a></li>
+					
+						<li><a href="/blog/archives">Archives</a></li>
+					
+						<li><a href="/blog/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:adamsq.github.io/blog">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/05/04/sdcc2/" title="sdcc man阅读笔记（二）——基础编译选项&amp;output files" itemprop="url">sdcc man阅读笔记（二）——基础编译选项&amp;output files</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-04T13:12:25.000Z" itemprop="datePublished"> 發表於 2015-05-04</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、基础编译选项"><span class="toc-number">1.</span> <span class="toc-text">一、基础编译选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_单源文件的编译"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 单源文件的编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_多源文件的编译"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 多源文件的编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3_库文件的链接"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 库文件的链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、output_file"><span class="toc-number">2.</span> <span class="toc-text">二、output file</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_asm文件"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 asm文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_lst文件"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 lst文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_rst文件"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 rst文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_sym文件"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 sym文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_rel文件"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 rel文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6_map文件"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 map文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7_mem文件"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 mem文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+		
+		</div>
+		
+		<h2 id="一、基础编译选项">一、基础编译选项</h2><h3 id="1-1_单源文件的编译">1.1 单源文件的编译</h3><p>假设目前有一个源文件led.c，可以用如下命令进行编译。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcc</span> led.c</span><br></pre></td></tr></table></figure>
+<p>编译完之后发现目录下好多生成的编译文件。其中led.rel是类似gcc中的led.o这样用于链接的对象文件，有所不同的是，led.rel中并不包含链接用的汇编代码，它包含在led.lst中。而led.ihx是用来烧写的hex文件，它的格式是intel hex规范。实际用于烧写的文件格式要根据烧写工具来定制，这一点之后再研究。</p>
+<h3 id="1-2_多源文件的编译">1.2 多源文件的编译</h3><p>在另外一个项目中，共有4个源文件。key.c用来控制矩阵键盘，display.c用来操作点阵屏，uart.c用来实现串行通信，而main.c用来统一调用其他源文件里的函数。</p>
+<p>这几个源文件编译的方法是先将源文件编译成库，然后再统一链接。使用编译选项 -c 表示complier only，只编译不链接。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcc</span> -c key.c</span><br><span class="line"><span class="variable">$sdcc</span> -c display.c</span><br><span class="line"><span class="variable">$sdcc</span> -c uart.c</span><br><span class="line"><span class="variable">$sdcc</span> main.c key.rel display.rel uart.rel</span><br></pre></td></tr></table></figure>
+<p>当然也可以将最后一条命令这样做，统一将源码先全部编译成链接库，这样在写makefile时会更方便。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcc</span> -c main.c</span><br><span class="line"><span class="variable">$sdcc</span> main.rel key.rel display.rel uart.rel</span><br></pre></td></tr></table></figure>
+<h3 id="1-3_库文件的链接">1.3 库文件的链接</h3><p>在上述的项目里，uart.c的其中一个函数用到了crc校验，它的函数原型在另外的crc.lib库文件中，编译的时候要额外链接该库文件。</p>
+<figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcc</span> -c uart<span class="class">.c</span> crc.lib</span><br></pre></td></tr></table></figure>
+<p>如果库文件不在当前目录要用 -L 选项制定目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcc</span> -c uart.c -L /usr/crc.lib</span><br></pre></td></tr></table></figure>
+<p>使用sdcclib命令，可以将对象文件链接成lib文件。</p>
+<p>用sdcclib -s和 sdcclib -m可以查看lib文件的符号表和函数表。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sdcclib</span> led.lib led.rel</span><br><span class="line"><span class="variable">$sdcclib</span> project.lib led.rel display.rel key.rel</span><br><span class="line"></span><br><span class="line"><span class="variable">$sdcclib</span> <span class="operator">-s</span> led.lib</span><br><span class="line"><span class="variable">$sdcclib</span> -m projext.lib</span><br></pre></td></tr></table></figure>
+<h2 id="二、output_file">二、output file</h2><p>使用sdcc led.c后发现目录下一大堆编译生成的文件，来看看这些文件都是用来做什么的。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ls</span></span><br><span class="line">led.asm led.lst led.rst led.sym led.rel led.map led.mem</span><br></pre></td></tr></table></figure>
+<h3 id="2-1_asm文件">2.1 asm文件</h3><p>由complier创建，是c源码文件编译成汇编后的结果。在分析一些具体问题的时候，可能会需要去查看编译出来的汇编指令。</p>
+<h3 id="2-2_lst文件">2.2 lst文件</h3><p>由assembler创建，我对比了同一个源文件生成的lst文件和asm文件，两者差不多。不同的是lst在行首有每一行的相对地址，而asm则没有，但asm有用标示符来标示一些用于跳转的地址，方便我们查看。</p>
+<h3 id="2-3_rst文件">2.3 rst文件</h3><p>由linker创建，它和lst的文件的区别是，lst行首的相对地址变更成了链接时使用的地址，将一些栈区与堆区的地址加入了文件，使原文件的指令地址发生了偏移。</p>
+<h3 id="2-4_sym文件">2.4 sym文件</h3><p>由assembler创建，该文件包含的是当前源文件的符号表。</p>
+<h3 id="2-5_rel文件">2.5 rel文件</h3><p>由assembler创建，该文件被用于链接。</p>
+<h3 id="2-6_map文件">2.6 map文件</h3><p>由linker创建，该文件包含有最终生成的目标文件的地址图，标明了所有函数在最终目标文件里的位置，以及是从哪个模块链接过来的。</p>
+<h3 id="2-7_mem文件">2.7 mem文件</h3><p>该文件里显示目标文件运行时RAM和堆栈的使用情况。</p>
+<h2 id="总结">总结</h2><ul>
+<li>单源文件的工程可以使用sdcc source.c来编译。</li>
+<li>多元文件的工程可以将源码编译成rel文件，再统一链接。</li>
+<li>sdcc编译成功后会生成许多文件。</li>
+<li>lst rst rel sym文件用于编译过程，如果编译没有出现问题，可以不用去看这些文件。</li>
+<li>asm用于显示源文件的汇编代码，在解决一些优化及疑难问题时要去查看该文件。</li>
+<li>map和mem文件可以帮助我们分析该项目对单片机存储资源的占用情况。</li>
+</ul>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://adamsq.github.io/blog/2015/05/04/sdcc2/" data-title="sdcc man阅读笔记（二）——基础编译选项&amp;output files | adam&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/05/05/sdcc3/" title="sdcc man阅读笔记（三）——c51专用编译选项">
+  <strong>上一篇：</strong><br/>
+  <span>
+  sdcc man阅读笔记（三）——c51专用编译选项</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/05/04/sdcc1/"  title="sdcc man阅读笔记（一）——sdcc 的介绍与安装">
+ <strong>下一篇：</strong><br/> 
+ <span>sdcc man阅读笔记（一）——sdcc 的介绍与安装
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、基础编译选项"><span class="toc-number">1.</span> <span class="toc-text">一、基础编译选项</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_单源文件的编译"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 单源文件的编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_多源文件的编译"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 多源文件的编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3_库文件的链接"><span class="toc-number">1.3.</span> <span class="toc-text">1.3 库文件的链接</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、output_file"><span class="toc-number">2.</span> <span class="toc-text">二、output file</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_asm文件"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 asm文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_lst文件"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 lst文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_rst文件"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 rst文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_sym文件"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 sym文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_rel文件"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 rel文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6_map文件"><span class="toc-number">2.6.</span> <span class="toc-text">2.6 map文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7_mem文件"><span class="toc-number">2.7.</span> <span class="toc-text">2.7 mem文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.</span> <span class="toc-text">总结</span></a></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/java-web/" title="java&amp;web">java&amp;web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Adam ,a fat guy who will never stop eating. <br/>
+			Nice to meet you.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/adamsq" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:adam_embedded@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/blog/about" target="_blank" title="adam">adam</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/blog/js/jquery-2.0.3.min.js"></script>
+<script src="/blog/js/jquery.imagesloaded.min.js"></script>
+<script src="/blog/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/blog/img/scrollup.png"/></a>
+	</div>
+	<script src="/blog/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
