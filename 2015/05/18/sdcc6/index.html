@@ -1,0 +1,428 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sdcc man阅读笔记（六）——中断 | adam&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="adam">
+    
+
+    
+    <meta name="description" content="一、关键字1.1 interrupt&amp;amp;usingsdcc中，中断程序使用的关键字和keil一样:
+1234void timer_isr (void) __interrupt (1) __using (1)&amp;#123;...&amp;#125;
+interrupt指定中断号，using指定register bank。
+中断程序可以写在任意一个源文件里，但在包含main程序的源文件里，必须要有一份中断">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdcc man阅读笔记（六）——中断">
+<meta property="og:url" content="http://adamsq.github.io/blog/2015/05/18/sdcc6/index.html">
+<meta property="og:site_name" content="adam's blog">
+<meta property="og:description" content="一、关键字1.1 interrupt&amp;amp;usingsdcc中，中断程序使用的关键字和keil一样:
+1234void timer_isr (void) __interrupt (1) __using (1)&amp;#123;...&amp;#125;
+interrupt指定中断号，using指定register bank。
+中断程序可以写在任意一个源文件里，但在包含main程序的源文件里，必须要有一份中断">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdcc man阅读笔记（六）——中断">
+<meta name="twitter:description" content="一、关键字1.1 interrupt&amp;amp;usingsdcc中，中断程序使用的关键字和keil一样:
+1234void timer_isr (void) __interrupt (1) __using (1)&amp;#123;...&amp;#125;
+interrupt指定中断号，using指定register bank。
+中断程序可以写在任意一个源文件里，但在包含main程序的源文件里，必须要有一份中断">
+
+    
+    <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/blog/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/blog/img/20.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/20.jpg">
+    
+    <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/blog/"><img src="/blog/img/20.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/blog/" title="adam&#39;s blog">adam&#39;s blog</a></h1>
+				<h2 class="blog-motto">Angels can fly because they take themselves lightly.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/blog/">Home</a></li>
+					
+						<li><a href="/blog/archives">Archives</a></li>
+					
+						<li><a href="/blog/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:adamsq.github.io/blog">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/05/18/sdcc6/" title="sdcc man阅读笔记（六）——中断" itemprop="url">sdcc man阅读笔记（六）——中断</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-18T11:54:50.000Z" itemprop="datePublished"> 發表於 2015-05-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、关键字"><span class="toc-number">1.</span> <span class="toc-text">一、关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_interrupt&using"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 interrupt&using</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_critical"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 critical</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用中断时的常见bug"><span class="toc-number">2.</span> <span class="toc-text">二、使用中断时的常见bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_变量没有被定义为volatile"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 变量没有被定义为volatile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_非原子指令"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 非原子指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_堆栈溢出"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 堆栈溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_使用了不可重入的函数"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 使用了不可重入的函数</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="一、关键字">一、关键字</h2><h3 id="1-1_interrupt&amp;using">1.1 interrupt&amp;using</h3><p>sdcc中，中断程序使用的关键字和keil一样:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">timer_isr</span> <span class="params">(<span class="keyword">void</span>)</span> __<span class="title">interrupt</span> <span class="params">(1)</span> __<span class="title">using</span> <span class="params">(1)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>interrupt指定中断号，using指定register bank。</p>
+<p>中断程序可以写在任意一个源文件里，但在包含main程序的源文件里，必须要有一份中断程序的声明。</p>
+<p>如果使用register bank 0，那么系统会将当前程序用到的寄存器全都保存进堆栈。如果用到其他register bank，那么只会保存类似dptr这样的特殊寄存器。</p>
+<h3 id="1-2_critical">1.2 critical</h3><p>critical用于表示一个程序不能被中断打算，sdcc会在运行__critical修饰的程序前保存当前中断使能状态，并关闭所有中断，运行完了之后再打开。<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">int</span> <span class="tag">foo</span> () <span class="tag">__critical</span></span><br><span class="line">&#123;</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样对单独的语句也可以使用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__critical&#123; i++; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二、使用中断时的常见bug">二、使用中断时的常见bug</h2><h3 id="2-1_变量没有被定义为volatile">2.1 变量没有被定义为volatile</h3><p>这是个常见的错误，没有声明为volatele的变量，会使编译器对变量的读取采取优化。</p>
+<h3 id="2-2_非原子指令">2.2 非原子指令</h3><p>有些c语句并非对应一句汇编指令，比如在c51下16位变量读取，可能需要2到3条指令来执行。如果在执行第一条指令时发生了中断，很有可能会产生意想不到的后果，而且这种bug很难reproduce。</p>
+<h3 id="2-3_堆栈溢出">2.3 堆栈溢出</h3><p>中断程序的返回地址和保留的寄存器值全都存在堆栈里。如果在调用中断程序时，程序正好调用了多层的子程序里最深的一层，很有可能会没有足够的堆栈给中断使用。</p>
+<h3 id="2-4_使用了不可重入的函数">2.4 使用了不可重入的函数</h3><p>如果中断程序里对16位/32位的变量进行了乘除、取余等操作，其实是额外调用了一些子函数，要使用—stack-auto将这些都编译为可重入函数。</p>
+<p>另外，如果在中断程序中调用了其他函数（不推荐这么做），那么要使用#pragma nooverlay来避免子程序使用可覆盖的变量。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://adamsq.github.io/blog/2015/05/18/sdcc6/" data-title="sdcc man阅读笔记（六）——中断 | adam&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/blog/2015/05/18/sdcc5/"  title="sdcc man阅读笔记（五）——mem文件与map文件">
+ <strong>下一篇：</strong><br/> 
+ <span>sdcc man阅读笔记（五）——mem文件与map文件
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、关键字"><span class="toc-number">1.</span> <span class="toc-text">一、关键字</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_interrupt&using"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 interrupt&using</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_critical"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 critical</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、使用中断时的常见bug"><span class="toc-number">2.</span> <span class="toc-text">二、使用中断时的常见bug</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_变量没有被定义为volatile"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 变量没有被定义为volatile</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_非原子指令"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 非原子指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_堆栈溢出"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 堆栈溢出</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_使用了不可重入的函数"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 使用了不可重入的函数</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/java-web/" title="java&amp;web">java&amp;web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Adam ,a fat guy who will never stop eating. <br/>
+			Nice to meet you.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/adamsq" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:adam_embedded@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/blog/about" target="_blank" title="adam">adam</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/blog/js/jquery-2.0.3.min.js"></script>
+<script src="/blog/js/jquery.imagesloaded.min.js"></script>
+<script src="/blog/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/blog/img/scrollup.png"/></a>
+	</div>
+	<script src="/blog/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

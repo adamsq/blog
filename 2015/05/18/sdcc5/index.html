@@ -1,0 +1,672 @@
+
+ <!DOCTYPE HTML>
+<html >
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sdcc man阅读笔记（五）——mem文件与map文件 | adam&#39;s blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="adam">
+    
+
+    
+    <meta name="description" content="一、mem文件和map文件sdcc提供mem文件和map文件来帮助我们分析一个项目编译完成后，它对各种存储空间的占用情况。
+1.1 mem文件mem文件主要组成是这样的：——内部ram使用表——外部ram和rom使用统计表
+打开在前一个实验里生成的test.mem查看的结果如下
+
+Internal RAM layout:      0 1 2 3 4 5 6 7 8 9 A B C D E F0x">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdcc man阅读笔记（五）——mem文件与map文件">
+<meta property="og:url" content="http://adamsq.github.io/blog/2015/05/18/sdcc5/index.html">
+<meta property="og:site_name" content="adam's blog">
+<meta property="og:description" content="一、mem文件和map文件sdcc提供mem文件和map文件来帮助我们分析一个项目编译完成后，它对各种存储空间的占用情况。
+1.1 mem文件mem文件主要组成是这样的：——内部ram使用表——外部ram和rom使用统计表
+打开在前一个实验里生成的test.mem查看的结果如下
+
+Internal RAM layout:      0 1 2 3 4 5 6 7 8 9 A B C D E F0x">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdcc man阅读笔记（五）——mem文件与map文件">
+<meta name="twitter:description" content="一、mem文件和map文件sdcc提供mem文件和map文件来帮助我们分析一个项目编译完成后，它对各种存储空间的占用情况。
+1.1 mem文件mem文件主要组成是这样的：——内部ram使用表——外部ram和rom使用统计表
+打开在前一个实验里生成的test.mem查看的结果如下
+
+Internal RAM layout:      0 1 2 3 4 5 6 7 8 9 A B C D E F0x">
+
+    
+    <link rel="alternative" href="/atom.xml" title="adam&#39;s blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/blog/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/blog/img/20.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/blog/img/20.jpg">
+    
+    <link rel="stylesheet" href="/blog/css/style.css" type="text/css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/blog/"><img src="/blog/img/20.png" alt="adam&#39;s blog" title="adam&#39;s blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/blog/" title="adam&#39;s blog">adam&#39;s blog</a></h1>
+				<h2 class="blog-motto">Angels can fly because they take themselves lightly.</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜單">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/blog/">Home</a></li>
+					
+						<li><a href="/blog/archives">Archives</a></li>
+					
+						<li><a href="/blog/about">About</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:adamsq.github.io/blog">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/05/18/sdcc5/" title="sdcc man阅读笔记（五）——mem文件与map文件" itemprop="url">sdcc man阅读笔记（五）——mem文件与map文件</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-18T11:39:46.000Z" itemprop="datePublished"> 發表於 2015-05-18</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<div id="toc" class="toc-article">
+			<strong class="toc-title">文章目錄</strong>
+		
+			<ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、mem文件和map文件"><span class="toc-number">1.</span> <span class="toc-text">一、mem文件和map文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_mem文件"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 mem文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_map文件"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 map文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、指定分段地址"><span class="toc-number">2.</span> <span class="toc-text">二、指定分段地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_—xram-loc"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 —xram-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_—code-loc"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 —code-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_—stack-loc"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 —stack-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_—xstack-loc"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 —xstack-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_—idata-loc"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 —idata-loc</span></a></li></ol></li></ol>
+		
+		</div>
+		
+		<h2 id="一、mem文件和map文件">一、mem文件和map文件</h2><p>sdcc提供mem文件和map文件来帮助我们分析一个项目编译完成后，它对各种存储空间的占用情况。</p>
+<h3 id="1-1_mem文件">1.1 mem文件</h3><p>mem文件主要组成是这样的：<br>——内部ram使用表<br>——外部ram和rom使用统计表</p>
+<p>打开在前一个实验里生成的test.mem查看的结果如下</p>
+<blockquote>
+<p>Internal RAM layout:<br>      0 1 2 3 4 5 6 7 8 9 A B C D E F<br>0x00:|0|0|0|0|0|0|0|0|a|I|S|S|S|S|S|S|<br>0x10:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x20:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x30:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x40:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x50:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x60:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x70:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x80:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x90:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xa0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xb0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xc0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xd0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xe0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xf0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|</p>
+<p>0-3:Reg Banks, T:Bit regs, a-z:Data, B:Bits, Q:Overlay, I:iData, S:Stack, A:Absolute</p>
+<p>Stack starts at: 0x0a (sp set to 0x09) with 246 bytes available.</p>
+</blockquote>
+<p>可以看到它有一个内部ram的map图，每个字节的指派都很清晰，对于外部ram和rom，也提供了一张总体统计表。</p>
+<p><strong>Other memory:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Start</th>
+<th>End</th>
+<th>Size</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAGED EXT. RAM</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>1</td>
+<td>256</td>
+</tr>
+<tr>
+<td>EXTERNAL RAM</td>
+<td>0x0001</td>
+<td>0x0001</td>
+<td>1</td>
+<td>65536</td>
+</tr>
+<tr>
+<td>ROM/EPROM/FLASH</td>
+<td>0x0000</td>
+<td>0x0079</td>
+<td>122</td>
+<td>65536</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2_map文件">1.2 map文件</h3><p>mem文件提供的是ram和rom的总体使用统计，而map文件，则是ram和rom的详细内存使用表。</p>
+<p>map文件的前两段是由链接器创建的符号表，然后再是ram的详细分段。</p>
+<p>map文件的主要组成是这样的：<br>——符号表<br>——ram map<br>———ram segment REG_BANK_0<br>———ram segment DSEG<br>———ram segment …..<br>——rom map<br>———-start up<br>———-code （代码区）<br>———-const（常量区）<br>———-lib&amp;rel列表</p>
+<p>在ram map中，除了分段的大小，map文件还会列出所有申明在这个区域的变量名以及该变量实际是在哪个源文件里申明的，比如DSEG段：</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Addr</th>
+<th>Size</th>
+<th>Decimal Bytes</th>
+<th>(Attributes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DSEG</td>
+<td>00000000</td>
+<td>00000080</td>
+<td>128 bytes</td>
+<td>(REL,CON)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>地址表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Global</th>
+<th>Global Defined</th>
+<th>In Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>00000008</td>
+<td>_data_v</td>
+<td>test</td>
+</tr>
+</tbody>
+</table>
+<p><strong>变量表</strong></p>
+<p>段表的顺序是REG_BANK_0（R0-R7)，DSEG(data)，ISEG（idata），SSEG(stack)，PSEG（pdata)，XSEG(xdata)，都是之前有提到的存储空间。</p>
+<p>在rom map里，一开始是一段汇编函数的地址图，关于sdcc如何初始化单片机及c语言运行环境，之后再做分析。</p>
+<p>进入代码区，我写了一个小的实验项目，它的代码区memory map是这样的：</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Addr</th>
+<th>Size</th>
+<th>Decimal Bytes</th>
+<th>(Attributes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSEG</td>
+<td>0000006E</td>
+<td>00000282</td>
+<td>642. bytes</td>
+<td>(REL,CON,CODE)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>code区总表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Global</th>
+<th>Global Defined In Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C:</td>
+<td>0000006E</td>
+<td>_init_timer0</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000075</td>
+<td>_count_runtime_start</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000078</td>
+<td>_count_runtime_over</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000008D</td>
+<td>_init_uart</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000009F</td>
+<td>_uart_send_char</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000AD</td>
+<td>_delay10ms</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000AE</td>
+<td>_delay100cyc</td>
+<td>delay</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000B8</td>
+<td>_delay10000cyc</td>
+<td>delay</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000CA</td>
+<td>_HC595_Send_Data</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000F5</td>
+<td>_HC595_Set_Row</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000012C</td>
+<td>_Led_Show_Word</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000018B</td>
+<td>_Delay10ms</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000001A3</td>
+<td>_Scan_key</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000239</td>
+<td>_Check_Password</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000027C</td>
+<td>_board_init</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000028C</td>
+<td>_Beer</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000002B3</td>
+<td>_main</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000002EC</td>
+<td>__sdcc_external_startup</td>
+<td>_startup</td>
+</tr>
+</tbody>
+</table>
+<p><strong>函数表</strong></p>
+<p>然后是常量区的大小和常量表（略），形式同上述data分段。</p>
+<p>mem文件会分别列出每个函数在rom中的起始地址以及他们从哪里链接而来。也会给出所有链接的rel和lib</p>
+<blockquote>
+<p>Files Linked                              [ module(s) ]</p>
+<p>build/debug.rel                           [  ]<br>build/delay.rel                           [  ]<br>build/display.rel                         [  ]<br>build/key.rel                             [  ]<br>build/main.rel                            [  ]</p>
+<p>Libraries Linked                          [ object file ]</p>
+<p>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtclear.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                         [ crtxinit.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtxclear.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtpagesfr.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtstart.rel ]<br>/usr/bin/../share/sdcc/lib/small/libsdcc.lib<br>                                        [ _startup.rel ]</p>
+</blockquote>
+<h2 id="二、指定分段地址">二、指定分段地址</h2><p>sdcc可以用一些链接选项来修改默认的ram/rom段的起始地址。</p>
+<h3 id="2-1_—xram-loc">2.1 —xram-loc</h3><p>默认值为0，指定外部内存使用的起始地址，链接选项可以用16进制或者10进制，e.g<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--xram-loc <span class="number">0x8000</span> or --xram-loc <span class="number">32768</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-2_—code-loc">2.2 —code-loc</h3><p>修改code段在rom中的起始地址，默认为0</p>
+<h3 id="2-3_—stack-loc">2.3 —stack-loc</h3><p>修改堆栈指针，如果要使用这个选项，要一并使用—no-pack-iram来关闭用寄存器优化变量的访问。</p>
+<h3 id="2-4_—xstack-loc">2.4 —xstack-loc</h3><p>默认值为pdata区域之后</p>
+<h3 id="2-5_—idata-loc">2.5 —idata-loc</h3><p>默认值为0x80</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://adamsq.github.io/blog/2015/05/18/sdcc5/" data-title="sdcc man阅读笔记（五）——mem文件与map文件 | adam&#39;s blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+ <div class="prev" >
+ <a href="/blog/2015/05/18/sdcc6/" title="sdcc man阅读笔记（六）——中断">
+  <strong>上一篇：</strong><br/>
+  <span>
+  sdcc man阅读笔记（六）——中断</span>
+</a>
+</div>
+
+
+<div class="next">
+<a href="/blog/2015/05/05/sdcc4/"  title="sdcc man阅读笔记（四）——存储类型关键字">
+ <strong>下一篇：</strong><br/> 
+ <span>sdcc man阅读笔记（四）——存储类型关键字
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="顯示側邊欄"></a></div>
+
+  <div id="toc" class="toc-aside">
+  <strong class="toc-title">文章目錄</strong>
+ 
+ <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、mem文件和map文件"><span class="toc-number">1.</span> <span class="toc-text">一、mem文件和map文件</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1_mem文件"><span class="toc-number">1.1.</span> <span class="toc-text">1.1 mem文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2_map文件"><span class="toc-number">1.2.</span> <span class="toc-text">1.2 map文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、指定分段地址"><span class="toc-number">2.</span> <span class="toc-text">二、指定分段地址</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1_—xram-loc"><span class="toc-number">2.1.</span> <span class="toc-text">2.1 —xram-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2_—code-loc"><span class="toc-number">2.2.</span> <span class="toc-text">2.2 —code-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3_—stack-loc"><span class="toc-number">2.3.</span> <span class="toc-text">2.3 —stack-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4_—xstack-loc"><span class="toc-number">2.4.</span> <span class="toc-text">2.4 —xstack-loc</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5_—idata-loc"><span class="toc-number">2.5.</span> <span class="toc-text">2.5 —idata-loc</span></a></li></ol></li></ol>
+ 
+  </div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隱藏側邊欄"></a></div>
+<aside class="clearfix">
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">標簽</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/java-web/" title="java&amp;web">java&amp;web<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/blog/tags/linux/" title="linux">linux<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情鏈接</p>
+    <ul>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 訂閱</a>
+</div>
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Adam ,a fat guy who will never stop eating. <br/>
+			Nice to meet you.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		<a href="https://github.com/adamsq" target="_blank" class="icon-github" title="github"></a>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		<a href="mailto:adam_embedded@163.com" target="_blank" class="icon-email" title="Email Me"></a>
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		
+		<a href="/blog/about" target="_blank" title="adam">adam</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/blog/js/jquery-2.0.3.min.js"></script>
+<script src="/blog/js/jquery.imagesloaded.min.js"></script>
+<script src="/blog/js/gallery.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+      
+      $('#toc.toc-aside').css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<a href="#" class="overlay" id="qrcode"></a>',
+  '<div class="qrcode clearfix"><span>扫描二维码分享到微信朋友圈</span><a class="qrclose" href="#nothing"></a><strong>Loading...Please wait</strong><img id="qrcode-pic" data-src="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '"/></div>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+  $('.article-share-qrcode').click(function(){
+    var imgSrc = $('#qrcode-pic').attr('data-src');
+    $('#qrcode-pic').attr('src', imgSrc);
+    $('#qrcode-pic').load(function(){
+        $('.qrcode strong').text(' ');
+    });
+  });
+});     
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/blog/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/blog/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回頂部"><img src="/blog/img/scrollup.png"/></a>
+	</div>
+	<script src="/blog/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>

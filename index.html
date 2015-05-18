@@ -81,6 +81,373 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/blog/2015/05/18/sdcc6/" title="sdcc man阅读笔记（六）——中断" itemprop="url">sdcc man阅读笔记（六）——中断</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-18T11:54:50.000Z" itemprop="datePublished"> 發表於 2015-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="一、关键字">一、关键字</h2><h3 id="1-1_interrupt&amp;using">1.1 interrupt&amp;using</h3><p>sdcc中，中断程序使用的关键字和keil一样:</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">timer_isr</span> <span class="params">(<span class="keyword">void</span>)</span> __<span class="title">interrupt</span> <span class="params">(1)</span> __<span class="title">using</span> <span class="params">(1)</span></span><br><span class="line"></span>&#123;</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>interrupt指定中断号，using指定register bank。</p>
+<p>中断程序可以写在任意一个源文件里，但在包含main程序的源文件里，必须要有一份中断程序的声明。</p>
+<p>如果使用register bank 0，那么系统会将当前程序用到的寄存器全都保存进堆栈。如果用到其他register bank，那么只会保存类似dptr这样的特殊寄存器。</p>
+<h3 id="1-2_critical">1.2 critical</h3><p>critical用于表示一个程序不能被中断打算，sdcc会在运行__critical修饰的程序前保存当前中断使能状态，并关闭所有中断，运行完了之后再打开。<br><figure class="highlight less"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">int</span> <span class="tag">foo</span> () <span class="tag">__critical</span></span><br><span class="line">&#123;</span><br><span class="line">...</span><br><span class="line">...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>同样对单独的语句也可以使用</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__critical&#123; i++; &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="二、使用中断时的常见bug">二、使用中断时的常见bug</h2><h3 id="2-1_变量没有被定义为volatile">2.1 变量没有被定义为volatile</h3><p>这是个常见的错误，没有声明为volatele的变量，会使编译器对变量的读取采取优化。</p>
+<h3 id="2-2_非原子指令">2.2 非原子指令</h3><p>有些c语句并非对应一句汇编指令，比如在c51下16位变量读取，可能需要2到3条指令来执行。如果在执行第一条指令时发生了中断，很有可能会产生意想不到的后果，而且这种bug很难reproduce。</p>
+<h3 id="2-3_堆栈溢出">2.3 堆栈溢出</h3><p>中断程序的返回地址和保留的寄存器值全都存在堆栈里。如果在调用中断程序时，程序正好调用了多层的子程序里最深的一层，很有可能会没有足够的堆栈给中断使用。</p>
+<h3 id="2-4_使用了不可重入的函数">2.4 使用了不可重入的函数</h3><p>如果中断程序里对16位/32位的变量进行了乘除、取余等操作，其实是额外调用了一些子函数，要使用—stack-auto将这些都编译为可重入函数。</p>
+<p>另外，如果在中断程序中调用了其他函数（不推荐这么做），那么要使用#pragma nooverlay来避免子程序使用可覆盖的变量。</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/blog/2015/05/18/sdcc5/" title="sdcc man阅读笔记（五）——mem文件与map文件" itemprop="url">sdcc man阅读笔记（五）——mem文件与map文件</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/blog/about" title="adam" target="_blank" itemprop="author">adam</a>
+		
+  <p class="article-time">
+    <time datetime="2015-05-18T11:39:46.000Z" itemprop="datePublished"> 發表於 2015-05-18</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h2 id="一、mem文件和map文件">一、mem文件和map文件</h2><p>sdcc提供mem文件和map文件来帮助我们分析一个项目编译完成后，它对各种存储空间的占用情况。</p>
+<h3 id="1-1_mem文件">1.1 mem文件</h3><p>mem文件主要组成是这样的：<br>——内部ram使用表<br>——外部ram和rom使用统计表</p>
+<p>打开在前一个实验里生成的test.mem查看的结果如下</p>
+<blockquote>
+<p>Internal RAM layout:<br>      0 1 2 3 4 5 6 7 8 9 A B C D E F<br>0x00:|0|0|0|0|0|0|0|0|a|I|S|S|S|S|S|S|<br>0x10:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x20:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x30:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x40:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x50:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x60:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x70:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x80:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0x90:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xa0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xb0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xc0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xd0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xe0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|<br>0xf0:|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|S|</p>
+<p>0-3:Reg Banks, T:Bit regs, a-z:Data, B:Bits, Q:Overlay, I:iData, S:Stack, A:Absolute</p>
+<p>Stack starts at: 0x0a (sp set to 0x09) with 246 bytes available.</p>
+</blockquote>
+<p>可以看到它有一个内部ram的map图，每个字节的指派都很清晰，对于外部ram和rom，也提供了一张总体统计表。</p>
+<p><strong>Other memory:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Start</th>
+<th>End</th>
+<th>Size</th>
+<th>Max</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PAGED EXT. RAM</td>
+<td>0x0000</td>
+<td>0x0000</td>
+<td>1</td>
+<td>256</td>
+</tr>
+<tr>
+<td>EXTERNAL RAM</td>
+<td>0x0001</td>
+<td>0x0001</td>
+<td>1</td>
+<td>65536</td>
+</tr>
+<tr>
+<td>ROM/EPROM/FLASH</td>
+<td>0x0000</td>
+<td>0x0079</td>
+<td>122</td>
+<td>65536</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-2_map文件">1.2 map文件</h3><p>mem文件提供的是ram和rom的总体使用统计，而map文件，则是ram和rom的详细内存使用表。</p>
+<p>map文件的前两段是由链接器创建的符号表，然后再是ram的详细分段。</p>
+<p>map文件的主要组成是这样的：<br>——符号表<br>——ram map<br>———ram segment REG_BANK_0<br>———ram segment DSEG<br>———ram segment …..<br>——rom map<br>———-start up<br>———-code （代码区）<br>———-const（常量区）<br>———-lib&amp;rel列表</p>
+<p>在ram map中，除了分段的大小，map文件还会列出所有申明在这个区域的变量名以及该变量实际是在哪个源文件里申明的，比如DSEG段：</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Addr</th>
+<th>Size</th>
+<th>Decimal Bytes</th>
+<th>(Attributes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>DSEG</td>
+<td>00000000</td>
+<td>00000080</td>
+<td>128 bytes</td>
+<td>(REL,CON)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>地址表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Global</th>
+<th>Global Defined</th>
+<th>In Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td></td>
+<td>00000008</td>
+<td>_data_v</td>
+<td>test</td>
+</tr>
+</tbody>
+</table>
+<p><strong>变量表</strong></p>
+<p>段表的顺序是REG_BANK_0（R0-R7)，DSEG(data)，ISEG（idata），SSEG(stack)，PSEG（pdata)，XSEG(xdata)，都是之前有提到的存储空间。</p>
+<p>在rom map里，一开始是一段汇编函数的地址图，关于sdcc如何初始化单片机及c语言运行环境，之后再做分析。</p>
+<p>进入代码区，我写了一个小的实验项目，它的代码区memory map是这样的：</p>
+<table>
+<thead>
+<tr>
+<th>Area</th>
+<th>Addr</th>
+<th>Size</th>
+<th>Decimal Bytes</th>
+<th>(Attributes)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CSEG</td>
+<td>0000006E</td>
+<td>00000282</td>
+<td>642. bytes</td>
+<td>(REL,CON,CODE)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>code区总表</strong></p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Global</th>
+<th>Global Defined In Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>C:</td>
+<td>0000006E</td>
+<td>_init_timer0</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000075</td>
+<td>_count_runtime_start</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000078</td>
+<td>_count_runtime_over</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000008D</td>
+<td>_init_uart</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000009F</td>
+<td>_uart_send_char</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000AD</td>
+<td>_delay10ms</td>
+<td>debug</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000AE</td>
+<td>_delay100cyc</td>
+<td>delay</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000B8</td>
+<td>_delay10000cyc</td>
+<td>delay</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000CA</td>
+<td>_HC595_Send_Data</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000000F5</td>
+<td>_HC595_Set_Row</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000012C</td>
+<td>_Led_Show_Word</td>
+<td>display</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000018B</td>
+<td>_Delay10ms</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000001A3</td>
+<td>_Scan_key</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>00000239</td>
+<td>_Check_Password</td>
+<td>key</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000027C</td>
+<td>_board_init</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>0000028C</td>
+<td>_Beer</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000002B3</td>
+<td>_main</td>
+<td>main</td>
+</tr>
+<tr>
+<td>C:</td>
+<td>000002EC</td>
+<td>__sdcc_external_startup</td>
+<td>_startup</td>
+</tr>
+</tbody>
+</table>
+<p><strong>函数表</strong></p>
+<p>然后是常量区的大小和常量表（略），形式同上述data分段。</p>
+<p>mem文件会分别列出每个函数在rom中的起始地址以及他们从哪里链接而来。也会给出所有链接的rel和lib</p>
+<blockquote>
+<p>Files Linked                              [ module(s) ]</p>
+<p>build/debug.rel                           [  ]<br>build/delay.rel                           [  ]<br>build/display.rel                         [  ]<br>build/key.rel                             [  ]<br>build/main.rel                            [  ]</p>
+<p>Libraries Linked                          [ object file ]</p>
+<p>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtclear.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                         [ crtxinit.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtxclear.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtpagesfr.rel ]<br>/usr/bin/../share/sdcc/lib/small/mcs51.lib<br>                                        [ crtstart.rel ]<br>/usr/bin/../share/sdcc/lib/small/libsdcc.lib<br>                                        [ _startup.rel ]</p>
+</blockquote>
+<h2 id="二、指定分段地址">二、指定分段地址</h2><p>sdcc可以用一些链接选项来修改默认的ram/rom段的起始地址。</p>
+<h3 id="2-1_—xram-loc">2.1 —xram-loc</h3><p>默认值为0，指定外部内存使用的起始地址，链接选项可以用16进制或者10进制，e.g<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--xram-loc <span class="number">0x8000</span> or --xram-loc <span class="number">32768</span></span><br></pre></td></tr></table></figure></p>
+<h3 id="2-2_—code-loc">2.2 —code-loc</h3><p>修改code段在rom中的起始地址，默认为0</p>
+<h3 id="2-3_—stack-loc">2.3 —stack-loc</h3><p>修改堆栈指针，如果要使用这个选项，要一并使用—no-pack-iram来关闭用寄存器优化变量的访问。</p>
+<h3 id="2-4_—xstack-loc">2.4 —xstack-loc</h3><p>默认值为pdata区域之后</p>
+<h3 id="2-5_—idata-loc">2.5 —idata-loc</h3><p>默认值为0x80</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/blog/tags/嵌入式/">嵌入式</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/blog/2015/05/05/sdcc4/" title="sdcc man阅读笔记（四）——存储类型关键字" itemprop="url">sdcc man阅读笔记（四）——存储类型关键字</a>
   </h1>
   <p class="article-author">By
@@ -502,7 +869,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>4</sup></a></li>
+				<li><a href="/blog/tags/嵌入式/" title="嵌入式">嵌入式<sup>6</sup></a></li>
 			
 		
 			
